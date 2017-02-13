@@ -757,8 +757,8 @@ MonoBehaviour:
   dryMass: 10
   wetMass: 10.4
   windSpeed: 10
-  drag: 0.5
-  thrust: 500
+  drag: 0.1
+  thrust: 300
 --- !u!1 &987244911 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 154114, guid: c8685776cafe5d24493303e077fffcfb, type: 2}

@@ -52,7 +52,7 @@ public class RocketSimulation : MonoBehaviour {
             // simulate thrust
             if (currentMass > dryMass)
             {
-                Vector3 thrustForce = transform.TransformVector(new Vector3(0, thrust, 0));
+                Vector3 thrustForce = transform.TransformDirection(Vector3.up) * thrust;
                 var ct = transform.TransformPoint(CoT);
                 myRigidbody.AddForceAtPosition(thrustForce, ct, ForceMode.Force);
             }
@@ -65,7 +65,7 @@ public class RocketSimulation : MonoBehaviour {
             var cp = transform.TransformPoint(CoD);
 
             // simulate drag
-            Vector3 velocity = myRigidbody.velocity;
+            Vector3 velocity = transform.TransformVector(myRigidbody.velocity);
             float v2 = velocity.sqrMagnitude;
             Vector3 dragForce = -velocity.normalized * v2 * drag / 2.0f;
             myRigidbody.AddForceAtPosition(dragForce, cp, ForceMode.Force);
