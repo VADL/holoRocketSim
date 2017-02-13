@@ -13,7 +13,7 @@ public class RocketSimulation : MonoBehaviour {
     private float currentMass;
     private float scale;
     private Vector3 originalPos;
-    private Vector3 windVelocity;
+    private Vector3 windDirection;
     private Vector3 CoM;
     private Vector3 CoD;
     private Vector3 CoT;
@@ -25,10 +25,10 @@ public class RocketSimulation : MonoBehaviour {
     // Use this for initialization
     void Start () {
         originalPos = this.transform.localPosition;
-        windVelocity = new Vector3(windSpeed, 0f, 0f);
-        CoM = this.transform.Find("CoM").transform.localPosition;
-        CoD = this.transform.Find("CoD").transform.localPosition;
-        CoT = this.transform.Find("CoT").transform.localPosition;
+        windDirection = new Vector3(1f, 0f, 0f);
+        CoM = transform.Find("CoM").transform.localPosition;
+        CoD = transform.Find("CoD").transform.localPosition;
+        CoT = transform.Find("CoT").transform.localPosition;
         myRigidbody = this.gameObject.GetComponent<Rigidbody>();
         OnReset();
     }
@@ -37,8 +37,8 @@ public class RocketSimulation : MonoBehaviour {
     private void Update()
     {
     }
-    
-	void FixedUpdate () {
+
+    void FixedUpdate () {
         if (simulating)
         {
             float currentScale = this.gameObject.transform.root.transform.localScale.x; // they're all the same
@@ -48,21 +48,24 @@ public class RocketSimulation : MonoBehaviour {
                 currentMass -= 0.01f;
                 if (currentMass < dryMass) currentMass = dryMass;
             }
+            myRigidbody.mass = currentMass;
             // simulate thrust
             if (currentMass > dryMass)
             {
-                Vector3 thrustForce = new Vector3(0, thrust, 0);
-                myRigidbody.AddForceAtPosition(thrustForce, CoT, ForceMode.Force);
+                Vector3 thrustForce = transform.TransformVector(new Vector3(0, thrust, 0));
+                var ct = transform.TransformPoint(CoT);
+                myRigidbody.AddForceAtPosition(thrustForce, ct, ForceMode.Force);
             }
             // simulate gravity, don't need to do anything here
+            var cp = transform.TransformPoint(CoD);
             // simulate drag
             Vector3 velocity = myRigidbody.velocity;
-            float v2 = myRigidbody.velocity.sqrMagnitude;
+            float v2 = velocity.sqrMagnitude;
             Vector3 dragForce = -velocity.normalized * v2 * drag / 2.0f;
-            myRigidbody.AddForceAtPosition(dragForce, CoD, ForceMode.Force);
+            myRigidbody.AddForceAtPosition(dragForce, cp, ForceMode.Force);
             // simulate wind
-            Vector3 windForce = windVelocity.normalized * windSpeed * windSpeed * drag / 2.0f;
-            myRigidbody.AddForceAtPosition(windForce, CoD, ForceMode.Force);
+            Vector3 windForce = windDirection.normalized * windSpeed * windSpeed * drag / 2.0f;
+            myRigidbody.AddForceAtPosition(windForce, cp, ForceMode.Force);
         }
     }
 
@@ -75,6 +78,12 @@ public class RocketSimulation : MonoBehaviour {
         myRigidbody.mass = currentMass;
         myRigidbody.centerOfMass = CoM;
         simulating = true;
+    }
+
+    private void OnMouseDown()
+    {
+        OnReset();
+        OnLaunch();
     }
 
     void OnThrustIncrease()
