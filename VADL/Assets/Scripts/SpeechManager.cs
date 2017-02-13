@@ -37,6 +37,26 @@ public class SpeechManager : MonoBehaviour
             this.BroadcastMessage("OnDecreaseSize");
         });
 
+        keywords.Add("Increase thrust", () =>
+        {
+            this.BroadcastMessage("OnThrustIncrease");
+        });
+
+        keywords.Add("Decrease thrust", () =>
+        {
+            this.BroadcastMessage("OnThrustDecrease");
+        });
+
+        keywords.Add("Increase Drag", () =>
+        {
+            this.BroadcastMessage("OnDragIncrease");
+        });
+
+        keywords.Add("Decrease Drag", () =>
+        {
+            this.BroadcastMessage("OnDragDecrease");
+        });
+
         // Tell the KeywordRecognizer about our keywords.
         keywordRecognizer = new KeywordRecognizer(keywords.Keys.ToArray());
 
