@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SphereSounds : MonoBehaviour
+public class MotorSound : MonoBehaviour
 {
     AudioSource audioSource = null;
     AudioClip impactClip = null;
@@ -23,7 +23,7 @@ public class SphereSounds : MonoBehaviour
         impactClip = Resources.Load<AudioClip>("Impact");
         rollingClip = Resources.Load<AudioClip>("Rolling");
     }
-
+    
     // Occurs when this object starts colliding with another object
     void OnCollisionEnter(Collision collision)
     {

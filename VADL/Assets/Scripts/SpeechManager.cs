@@ -17,14 +17,24 @@ public class SpeechManager : MonoBehaviour
             this.BroadcastMessage("OnReset");
         });
 
-        keywords.Add("Drop Sphere", () =>
+        keywords.Add("Place Scene", () =>
         {
-            var focusObject = GazeGestureManager.Instance.FocusedObject;
-            if (focusObject != null)
-            {
-                // Call the OnDrop method on just the focused object.
-                focusObject.SendMessage("OnDrop");
-            }
+            this.BroadcastMessage("OnSelect");
+        });
+
+        keywords.Add("Rocket Launch", () =>
+        {
+            this.BroadcastMessage("OnLaunch");
+        });
+
+        keywords.Add("Increase size", () =>
+        {
+            this.BroadcastMessage("OnIncreaseSize");
+        });
+
+        keywords.Add("Decrease size", () =>
+        {
+            this.BroadcastMessage("OnDecreaseSize");
         });
 
         // Tell the KeywordRecognizer about our keywords.
