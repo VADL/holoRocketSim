@@ -17,13 +17,13 @@ public class SizeControl : MonoBehaviour
     void OnIncreaseSize()
     {
         float size = transform.localScale.x;
-        UpdateSize(size * 10.0f);
+        UpdateSize(size * 2.0f);
     }
 
     // Called by SpeechManager when the user says the "Drop sphere" command
     void OnDecreaseSize()
     {
         float size = transform.localScale.x;
-        UpdateSize(size * 0.1f);
+        UpdateSize(size * 0.5f);
     }
 }

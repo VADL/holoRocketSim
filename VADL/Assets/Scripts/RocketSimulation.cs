@@ -41,7 +41,6 @@ public class RocketSimulation : MonoBehaviour {
     void FixedUpdate () {
         if (simulating)
         {
-            float currentScale = this.gameObject.transform.root.transform.localScale.x; // they're all the same
             // update rigid body (mass)
             if (currentMass > dryMass)
             {
@@ -49,6 +48,7 @@ public class RocketSimulation : MonoBehaviour {
                 if (currentMass < dryMass) currentMass = dryMass;
             }
             myRigidbody.mass = currentMass;
+
             // simulate thrust
             if (currentMass > dryMass)
             {
@@ -56,13 +56,20 @@ public class RocketSimulation : MonoBehaviour {
                 var ct = transform.TransformPoint(CoT);
                 myRigidbody.AddForceAtPosition(thrustForce, ct, ForceMode.Force);
             }
-            // simulate gravity, don't need to do anything here
+
+            // simulate gravity
+            //var cg = transform.TransformPoint(CoM);
+            //Vector3 gravity = Vector3.down * currentMass;
+            //myRigidbody.AddForceAtPosition(gravity, cg, ForceMode.Force);
+
             var cp = transform.TransformPoint(CoD);
+
             // simulate drag
             Vector3 velocity = myRigidbody.velocity;
             float v2 = velocity.sqrMagnitude;
             Vector3 dragForce = -velocity.normalized * v2 * drag / 2.0f;
             myRigidbody.AddForceAtPosition(dragForce, cp, ForceMode.Force);
+
             // simulate wind
             Vector3 windForce = windDirection.normalized * windSpeed * windSpeed * drag / 2.0f;
             myRigidbody.AddForceAtPosition(windForce, cp, ForceMode.Force);
@@ -72,6 +79,9 @@ public class RocketSimulation : MonoBehaviour {
     // Called by GazeGestureManager when the user performs a Select gesture
     void OnLaunch()
     {
+        CoM = transform.Find("CoM").transform.localPosition;
+        CoD = transform.Find("CoD").transform.localPosition;
+        CoT = transform.Find("CoT").transform.localPosition;
         // configure rigid body properly
         myRigidbody.isKinematic = false;
         myRigidbody.useGravity = true;
