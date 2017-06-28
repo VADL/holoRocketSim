@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketSimulation : MonoBehaviour {
+public class RollFeedback : MonoBehaviour
+{
 
     Quaternion rot;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         rot = gameObject.transform.rotation;
     }
 
@@ -18,7 +20,7 @@ public class RocketSimulation : MonoBehaviour {
         Debug.Log(rot.ToString());
         Debug.Log(rot.eulerAngles);
     }
-    
+
 
     public void SetOrientation(float xval, float yval, float zval, float wval)
     {
