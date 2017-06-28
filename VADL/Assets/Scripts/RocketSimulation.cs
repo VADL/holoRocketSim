@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketSimulation : MonoBehaviour {
+public class RocketSimulation : MonoBehaviour
+{
 
     public float dryMass;
     public float wetMass;
@@ -23,7 +24,8 @@ public class RocketSimulation : MonoBehaviour {
     Rigidbody myRigidbody;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         originalPos = this.transform.localPosition;
         windDirection = new Vector3(1f, 0f, 0f);
         CoM = transform.Find("CoM").transform.localPosition;
@@ -38,7 +40,8 @@ public class RocketSimulation : MonoBehaviour {
     {
     }
 
-    void FixedUpdate () {
+    void FixedUpdate()
+    {
         if (simulating)
         {
             scale = transform.root.transform.localScale.x;
